@@ -3,6 +3,7 @@
 namespace controllers;
 use models\contact;
 use core\Image;
+use core\rest\Rest;
 
 class CsvProcessor{
 
@@ -33,27 +34,70 @@ class CsvProcessor{
 
             if($this->emailAdressDomainIsValid($emailAddressDomain)){
 
-                $date = date_create($record['date']);
-                $date = date_format($date,"Y-m-d ").$record['time'];
-
-                $contact = new Contact();
-                $contact->id = $record['id'];
-                $contact->title =  $record['title'];
-                $contact->first_name = $record['first_name'];
-                $contact->last_name = $record['last_name'];
-                $contact->email = $record['email']; 
-                $contact->date =  $date;
-                $contact->note = $record['note'];
-                $contact->image =  $this->createContactCrd($contact);
-               // echo '<img src = "'.$contact->image.'"><br/>';
-                $contact->email_ip = gethostbyname($emailAddressDomain);
-                $contact->save();
+               $this->createContact($record,$emailAddressDomain);              
 
             }
         }   
     }
 
-    public function createContactCrd($contact){
+    public function createContact($record,$emailAddressDomain){
+    
+        $date = date_create($record['date']);
+        $date = date_format($date,"Y-m-d ").$record['time'];
+
+        $contact = new Contact();
+        $contact->id = $record['id'];
+        $contact->title =  $record['title'];
+        $contact->first_name = $record['first_name'];
+        $contact->last_name = $record['last_name'];
+        $contact->email = $record['email']; 
+        $contact->date =  $date;
+        $contact->note = $record['note'];
+        $contact->image =  $this->createContactCard($contact);
+        $contact->email_ip = gethostbyname($emailAddressDomain);
+
+        $contact->save();
+
+        $this->postContactsToRemoteUrl([]);
+
+    }
+
+    public function postContactsToRemoteUrl($data){
+
+        $contacts = [];
+        $contactsObj = contact::all();
+        
+        foreach($contactsObj as $contact){
+
+            $contacts['users'] = [
+                 
+                "id" => $contact->id,
+                "title" => $contact->title,
+                "first_name"=>$contact->first_name,
+                "last_name" => $contact->last_name ,
+                "email" => $contact->email,
+                "email" => $contact->email,
+                "note" => $contact->note ,
+                "image" => $contact->image,
+                "email_ip" => $contact->email_ip,
+                
+            ];
+
+        }
+
+        $contacts = json_encode($contacts);
+       
+        
+        $headers = [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($contacts)
+        ];      
+        
+        return Rest::post("https://postman-echo.com/post", $contacts,$headers);
+
+    }
+
+    public function createContactCard($contact){
 
         $image_options = [
             "imageWidth" => 216,
@@ -78,7 +122,6 @@ class CsvProcessor{
         ];
 
         $image = Image::createContactCard($image_options,$text_options);
-         echo '<img src = "data:image/jpg;base64,'.base64_encode($image).'">';
         return 'data:image/jpg;base64,'.base64_encode($image);
         //echo '<img src = "data:image/jpg;base64,'.base64_encode($image).'"';
     }
@@ -94,10 +137,5 @@ class CsvProcessor{
         return $this->validateEmailAddressDomain($emailAddress)  == true;
 
     }
-
-    public function CreateContactCard(){
-
-    }
-
 
 }

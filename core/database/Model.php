@@ -58,7 +58,7 @@ class Model
        //dnd($this->column_names);
         foreach ($column_names as $column){
           if(property_exists($this,$column)){
-              $fields[$column] = $this->$column;
+              $fields[$column] = htmlentities($this->$column);
           }
         }
         return $fields;

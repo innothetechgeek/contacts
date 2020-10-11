@@ -36,18 +36,18 @@ class Image{
             $text_color = explode(",",$text_color);
             $text_color = imagecolorallocate($image, $text_color[0], $text_color[1], $text_color[2]); 
             
-            $i = 1;
-            foreach($text_options as $lines => $line){
-
-                $position = explode(",",$line['line'.$i]['position']);
-                $text = $line['line'.$i]['text']; 
-
-                // Function to create image which contains string.
-                imagestring($image, $position[0],$position[1], $position[2] , $text, $text_color);
-
-                $i++;
-            }
-            
+            foreach($text_options as $lines => $line_arr){
+                
+                foreach($line_arr as $line){
+                    
+                    $position = explode(",",$line['position']);
+                    $text = $line['text']; 
+    
+                    // Function to create image which contains string.
+                    imagestring($image, $position[0],$position[1], $position[2] , $text, $text_color);
+                    
+                }
+            }            
 
          }        
                  

@@ -37,6 +37,12 @@ class Grammer{
 
     }
 
+    public function compileBulkInsert(QueryBuilder $quer_builder,$values){
+
+        
+
+    }
+
     public function compileShowColumns(QueryBuilder $quer_builder){
        $table = $quer_builder->from;
        return "SHOW COLUMNS FROM {$table}";
