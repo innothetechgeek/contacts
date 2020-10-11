@@ -29,9 +29,11 @@ class Grammer{
 
         $columns = implode(array_keys($columns),",");
 
-        $insert_values = "(".$this->constructInsertValues($values).")";
+        //$insert_values = "(".$this->constructInsertValues($values).")";
 
-        return "insert into $table ($columns) values $insert_values";
+        $parameters = $this->constructInsertParams($values);
+        
+        return "insert into $table ($columns) values ($parameters)";
 
     }
 
@@ -40,12 +42,12 @@ class Grammer{
        return "SHOW COLUMNS FROM {$table}";
     }
 
-    public function constructInsertValues($values){
+    public function constructInsertParams($values){
         $values = array_filter($values);
         $insert_values = "";
 
         foreach ($values as $column => $value) {
-            $insert_values .= "'$value',";
+            $insert_values .= ":$column,";
         }
 
         return rtrim($insert_values,',');

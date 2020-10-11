@@ -82,18 +82,6 @@ class Model
 
     }
 
-    public function find($params = []){
-    
-        $results = [];
-        $resultQuery =   $this->query_builder->get();
-        foreach($resultQuery as $result){
-            $obj = new $this->model_name($this->table);
-            $obj->populate_object_data($result);
-            $results = $obj;
-        }
-        return $results;
-    
-    }
     public function findAll($params=[]){
 
         return $this->db->find($this->table,$params);
@@ -101,9 +89,9 @@ class Model
     }
 
     public function insert($fields){
-
         if(empty($fields)) return false;
-        return $this->query_builder->insert($this->table);
+       
+        return $this->query_builder->insert($fields);
 
 
     }
@@ -120,7 +108,7 @@ class Model
 
         $fields = $this->get_fields();
         //determine whether to updae or insert
-        if(property_exists($this,'id') && $this->id != ''){
+        if(property_exists($this,'id') && $this->find($this->id) == true){
             return $this->update($this->id,$fields);
         }else{
            $this->insert($fields);

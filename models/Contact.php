@@ -7,13 +7,14 @@
  */
  namespace models;
  use core\database\model;
-class Contacts extends Model
+class Contact extends Model
 {
 
-  protected $table =  'movie';
+  protected $table =  'contacts';
+  public $primary_key = 'id';
     public function __construct()
     {
-        $table = 'movie';
+        $table = 'contact';
         parent::__construct($table);
     }
 }

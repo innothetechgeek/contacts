@@ -1,6 +1,7 @@
 <?php
 
 namespace controllers;
+use models\contact;
 
 class CsvProcessor{
 
@@ -23,9 +24,26 @@ class CsvProcessor{
 
     public function saveData(){
         
+      //  $contact = contact::find(1);
+       
         $data = $this->getData();
-        var_dump( $data);
         
+        foreach($data as $index => $record){
+
+            $date = date_create($record['date']);
+            $date = date_format($date,"Y-m-d ").$record['time'];
+
+            $contact = new Contact();
+            $contact->id = $record['id'];
+            $contact->first_name = $record['first_name'];
+            $contact->last_name = $record['last_name'];
+            $contact->email = $record['email']; 
+            $contact->date =  $date;
+            $contact->note = $record['note'];
+
+            $contact->save();
+            
+        }   
 
     }
 
