@@ -45,7 +45,7 @@ class CsvProcessor{
                 $contact->date =  $date;
                 $contact->note = $record['note'];
                 $contact->image =  $this->createContactCrd($contact);
-               // echo '<img src = "'.$contact->image.'"><br/>';
+                echo '<img src = "'.$contact->image.'"><br/><br/>';
                 $contact->email_ip = gethostbyname($emailAddressDomain);
                 $contact->save();
 
@@ -78,7 +78,6 @@ class CsvProcessor{
         ];
 
         $image = Image::createContactCard($image_options,$text_options);
-         echo '<img src = "data:image/jpg;base64,'.base64_encode($image).'">';
         return 'data:image/jpg;base64,'.base64_encode($image);
         //echo '<img src = "data:image/jpg;base64,'.base64_encode($image).'"';
     }
