@@ -22,15 +22,16 @@ class Connection{
 
     public function statement($query, $bindings = [])
     {
-          var_dump(count($bindings));
+             var_dump($query);
             $statement = self::$connection->prepare($query);
-            $values = "";
+
             foreach ($bindings as $key=>$val) {
-            
-              $statement->bindValue($key,$val );              
+             
+              if(!empty($val)) $statement->bindValue($key,$val);              
                 
             }
             extract($bindings);
+            
             return $statement->execute();                    
             
     }
@@ -44,10 +45,8 @@ class Connection{
 
     public function insert($sql,$bindings){
         
-
         return $this->statement($sql, $bindings);
-        //self::$connection->exec($sql);
-
+       
     }
 
     public function get($sql){
