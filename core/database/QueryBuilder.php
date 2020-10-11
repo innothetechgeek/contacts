@@ -135,4 +135,28 @@ class QueryBuilder{
         $this->connection->insert($insert_statement);
   
     }
+
+    /**
+     *
+     */
+    public function find($value){
+
+        return $this->where($this->model->primary_key,'=', $value)->get();
+
+    }
+
+        /**
+     * adds where clause to a query
+     */
+    public function where($column, $operator = null, $value = null , $boolean = 'and'){
+
+        $value  = func_num_args() === 2 ? $operator : $value;
+        $operator  = func_num_args() === 2 ? '=' : $operator;
+
+        //add value and operator to the where's array
+        $this->wheres = compact("operator","value","column");
+
+        return $this;
+
+    }
 }
