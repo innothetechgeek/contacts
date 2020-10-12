@@ -12,6 +12,8 @@ use core\Router;
     Router::get('contacts','Api@getContacts');
     Router::get('timezones','Api@getTimeZones');
 
+    Router::get('test-pagination','Api@testPagination');
+
 ?>
 
 

@@ -1,5 +1,6 @@
 <?php
 namespace core\database;
+use core\Paginator;
 
 class QueryBuilder{
 
@@ -122,6 +123,45 @@ class QueryBuilder{
 
             }
         return $results_;
+
+    }
+     
+    function paginate($per_page){
+
+        $total = $this->getCountForPagination();
+        $page =isset($_GET['page']) ? $_GET['page'] : 1;
+        $results = $total ? $this->forPage($page, $per_page)->get() : [];
+        
+        return new Paginator($total,$per_page,'',$results);
+    }
+
+    public function getCountForPagination(){
+        
+        return count($this->get());
+    }
+
+    //calculate offset and limit
+    public function forPage($page, $perPage = 15)
+    {   
+        return $this->setOffset(($page - 1) * $perPage)->setLimit($perPage);
+    }
+
+    //set limit for the query (how many records to return)
+    public function setLimit($value)
+    {
+
+        $this->limit = $value;
+
+        return $this;
+
+    } 
+
+    //sets offset for the page (how many records to skip)
+    public function setOffset($value){
+        
+            $this->offset = $value;
+
+            return $this;
 
     }
 

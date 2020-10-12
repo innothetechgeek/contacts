@@ -4,7 +4,7 @@ namespace core\rest;
 class Rest{
 
     public static function post($url,$payload,$headers = []){
-        
+        ini_set('max_execution_time', 300);
         $cURLConnection = curl_init($url);
 
         curl_setopt($cURLConnection, CURLOPT_POST, true);

@@ -25,7 +25,8 @@ class CsvProcessor{
     }
 
     public function saveContacts(){
-        
+
+        ini_set('max_execution_time', 500);
         $data = $this->getContacts();
 
         foreach($data as $index => $record){
@@ -37,7 +38,8 @@ class CsvProcessor{
                $this->createContact($record,$email_address_domain);              
 
             }
-        }   
+        }
+        $this->postContactsToRemoteUrl();   
     }
 
     public function createContact($record,$emailAddressDomain){       
@@ -57,9 +59,7 @@ class CsvProcessor{
         $contact->image =  $this->createContactCard($contact);
         $contact->email_ip = gethostbyname($emailAddressDomain);
 
-        $contact->save();
-
-        $this->postContactsToRemoteUrl();
+        $contact->save();        
 
     }
 
