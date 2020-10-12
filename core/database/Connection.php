@@ -22,7 +22,6 @@ class Connection{
 
     public function statement($query, $bindings = [])
     {
-             var_dump($query);
             $statement = self::$connection->prepare($query);
 
             foreach ($bindings as $key=>$val) {

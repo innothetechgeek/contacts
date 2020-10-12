@@ -7,7 +7,7 @@ use core\rest\Rest;
 
 class CsvProcessor{
 
-    public function getData(){
+    public function getContacts(){
         
         $file = fopen(FILES_DIR."/MOCK_DATA.csv","r");
 
@@ -24,24 +24,24 @@ class CsvProcessor{
 
     }
 
-    public function saveData(){
+    public function saveContacts(){
         
-        $data = $this->getData();
+        $data = $this->getContacts();
 
         foreach($data as $index => $record){
             
-            $emailAddressDomain = explode("@",$record['email'])[1];
+            $email_address_domain = explode("@",$record['email'])[1];
 
-            if($this->emailAdressDomainIsValid($emailAddressDomain)){
+            if($this->emailAdressDomainIsValid($email_address_domain)){
 
-               $this->createContact($record,$emailAddressDomain);              
+               $this->createContact($record,$email_address_domain);              
 
             }
         }   
     }
 
-    public function createContact($record,$emailAddressDomain){
-    
+    public function createContact($record,$emailAddressDomain){       
+
         $date = date_create($record['date']);
         $date = date_format($date,"Y-m-d ").$record['time'];
 
@@ -53,16 +53,17 @@ class CsvProcessor{
         $contact->email = $record['email']; 
         $contact->date =  $date;
         $contact->note = $record['note'];
+        $contact->tz = $record['tz'];
         $contact->image =  $this->createContactCard($contact);
         $contact->email_ip = gethostbyname($emailAddressDomain);
 
         $contact->save();
 
-        $this->postContactsToRemoteUrl([]);
+        $this->postContactsToRemoteUrl();
 
     }
 
-    public function postContactsToRemoteUrl($data){
+    public function postContactsToRemoteUrl(){
 
         $contacts = [];
         $contactsObj = contact::all();

@@ -14,6 +14,12 @@ class QueryBuilder{
     
     }
 
+        
+    public $groups;
+
+    public $wheres = [];
+
+
      /**
    * The components that make up a select clause.
    *
@@ -143,6 +149,38 @@ class QueryBuilder{
 
         return $this->where($this->model->primary_key,'=', $value)->get();
 
+    }
+
+    /**
+   * Add a new "raw" select expression to the query.
+    */
+    public function selectRaw($column){
+
+        $this->bindings['select'] = [];
+        $columns = is_array($column) ? $column : func_get_args();
+
+        foreach ($columns as $as => $column) {
+
+            $this->columns[] = $column;
+
+        }
+
+        return $this;
+
+    }
+
+    public function groupBy(...$groups)
+    {
+
+        foreach ($groups as $group) {
+
+            $this->groups = array_merge(
+                (array) $this->groups,
+                $groups
+            );
+        }
+
+        return $this;
     }
 
         /**

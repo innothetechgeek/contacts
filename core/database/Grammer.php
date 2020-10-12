@@ -37,15 +37,11 @@ class Grammer{
 
     }
 
-    public function compileBulkInsert(QueryBuilder $quer_builder,$values){
-
-        
-
-    }
-
     public function compileShowColumns(QueryBuilder $quer_builder){
+
        $table = $quer_builder->from;
        return "SHOW COLUMNS FROM {$table}";
+
     }
 
     public function constructInsertParams($values){
@@ -152,7 +148,7 @@ class Grammer{
         return $join_statement;
     }
 
-    protected function compileGroups(Builder $query, $groups)
+    protected function compileGroups(QueryBuilder $query, $groups)
     {
         return 'group by '.implode($groups,',');
     }
