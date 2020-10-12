@@ -89,10 +89,10 @@ class Model
     }
 
     public function insert($fields){
+
         if(empty($fields)) return false;
        
         return $this->query_builder->insert($fields);
-
 
     }
 
@@ -112,8 +112,7 @@ class Model
             return $this->update($this->id,$fields);
         }else{
            $this->insert($fields);
-          return  $this->id;
-
+           return  $this->id;
         }
     }
 

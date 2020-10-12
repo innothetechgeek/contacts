@@ -5,7 +5,7 @@ namespace core;
 class Image{
 
 
-    public static function createContactCard($image_options = [],$text_options = []){
+    public static function createContactCard($image_options = [],$text_color="",$text_options = []){
 
         if(empty($image_options)) $image_options = [
             "imageWidth" => 216,
@@ -17,8 +17,6 @@ class Image{
 
         $text_color = empty($text_color) ?  "255, 255, 255" : $text_color;
         return self::createImage($image_options,$text_color, $text_options);
-       
-       // return  $image;
 
     }
 

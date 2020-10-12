@@ -1,10 +1,9 @@
 <?php
 namespace core\rest;
-
 class Rest{
 
     public static function post($url,$payload,$headers = []){
-        ini_set('max_execution_time', 300);
+        
         $cURLConnection = curl_init($url);
 
         curl_setopt($cURLConnection, CURLOPT_POST, true);
@@ -33,10 +32,12 @@ class Rest{
        
         if(!empty($headers)) curl_setopt($cURLConnection, CURLOPT_HTTPHEADER,$headers);
 
-        $phoneList = curl_exec($cURLConnection);
-        curl_close($cURLConnection);
+         $apiResponse = curl_exec($cURLConnection);
+         if ($apiResponse === false) 
+         $apiResponse = curl_error($cURLConnection);
+         curl_close($cURLConnection);
 
-        $jsonArrayResponse - json_decode($phoneList);
+         return $apiResponse;
 
     }
 }

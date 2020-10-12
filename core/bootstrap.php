@@ -8,6 +8,13 @@
  use core\Router;
  
  //load configuration and helper functions
+  function url($path){
+    if(ENVIROMENT == 'Development'){
+        echo "http://".$_SERVER['HTTP_HOST']."/". strtolower(SITE_NAME).'/'.$path;
+    }else{
+        echo "http://".$_SERVER['HTTP_HOST']."/".$path;
+    }
+  }
  require_once(ROOT . DS . 'config' . DS . 'config.php');
    //Autoload classes
      /*load classes automantically...

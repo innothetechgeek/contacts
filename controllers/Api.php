@@ -3,29 +3,26 @@
 namespace controllers;
 use models\contact;
 use core\database\fecade\DB;
+use core\rest\Rest;
 
 
 class Api{
 
-    public function getContacts(){
+    public function getContacts(){ 
         
+        $per_page = 51; //number of records to display per page
+        $paginationType = 'ajax';
         $contacts = DB::table('contacts')
-                      ->paginate(50);
+                      ->paginate($per_page,$paginationType);
 
         $data = [ 
-            'results' => $contacts->results,
+             'results' =>  $contacts->results,
             'pagination_links' => $contacts->get_pagination_links()
         ];
 
         echo json_encode($data);
 
-    }
-
-    public function testPagination(){
-      
-        $path = ROOT . DS . 'views' . DS . $name .'.php';
-
-    }
+    }    
 
     public function getTimeZones($time_zone = ""){
         
@@ -35,7 +32,12 @@ class Api{
                   ->where("tz", $time_zone)
                   ->get();
 
-        echo json_encode($times_zones);
+        $data = [   
+            'times-zones' => $times_zones, 
+            'total_contacts'=> count($times_zones)
+        ];
+
+        echo json_encode($data);
     }
 
 }
