@@ -126,13 +126,13 @@ class QueryBuilder{
 
     }
      
-    function paginate($per_page){
+    function paginate($per_page,$pagination_type = ''){
 
         $total = $this->getCountForPagination();
         $page =isset($_GET['page']) ? $_GET['page'] : 1;
         $results = $total ? $this->forPage($page, $per_page)->get() : [];
         
-        return new Paginator($total,$per_page,'',$results);
+        return new Paginator($total,$per_page,$pagination_type,$results);
     }
 
     public function getCountForPagination(){

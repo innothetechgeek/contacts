@@ -7,22 +7,11 @@ use core\Router;
     });
 
     Router::get('','home@index');
-    Router::get('get-raw-csv-data','CsvProcessor@getData');
-    Router::get('process-csv','CsvProcessor@saveContacts');
+    Router::get('get-raw-csv-data','Contacts@getData');
+    Router::get('process-csv','Contacts@saveContacts');
     Router::get('contacts','Api@getContacts');
     Router::get('timezones','Api@getTimeZones');
 
-    Router::get('test-pagination','Api@testPagination');
+    Router::get('list','Contacts@list');
 
 ?>
-
-
-
-
-
-
-
-
-
-
-

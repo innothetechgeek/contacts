@@ -5,7 +5,7 @@ use models\contact;
 use core\Image;
 use core\rest\Rest;
 
-class CsvProcessor{
+class Contacts{
 
     public function getContacts(){
         
@@ -136,6 +136,15 @@ class CsvProcessor{
     public function emailAdressDomainIsValid($emailAddress){
 
         return $this->validateEmailAddressDomain($emailAddress)  == true;
+
+    }
+
+    public function list(){
+      
+        $path = ROOT . DS . 'views' . DS . 'list_contacts.php';
+
+        include( $path);
+        
 
     }
 
